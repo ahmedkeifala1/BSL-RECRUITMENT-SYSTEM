@@ -11,7 +11,7 @@ export default function SiteLayout({
     <>
       <SiteNavbar />
 
-      <main>{children}</main>
+      {children}
 
       <SiteFooter />
     </>
