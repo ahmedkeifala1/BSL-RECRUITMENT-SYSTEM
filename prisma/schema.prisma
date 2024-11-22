@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,15 +7,117 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id String @id @default(cuid())
-  fullName String
-  email String @unique
-  password String
-  status String @default("created")
-  emailVerifiedAt DateTime? @db.Date
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum EmploymentType {
+  FullTime
+  PartTime
+  Contract
+  Internship
+
+  @@map("job_types")
+}
+
+enum UserType {
+  Admin
+  Staff
+  User
+
+  @@map("user_types")
+}
+
+model JobSeeker {
+  id         String   @id @default(cuid())
+  title      String
+  firstName  String
+  lastName   String
+  middleName String?
+  fullName   String
+  email      String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("job_seekers")
+}
+
+enum UserStatus {
+  Active
+  Blocked
+  Inactive
+
+  @@map("user_statuses")
+}
+
+model User {
+  id              String     @id @default(cuid())
+  fullName        String
+  email           String     @unique
+  password        String
+  userType        UserType   @default(User)
+  isEmailVerified Boolean    @default(false)
+  status          UserStatus @default(Active)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 
   @@map("users")
+}
+
+enum JobStatus {
+  Opened
+  Closed
+  Pending
+
+  @@map("job_statuses")
+}
+
+model Job {
+  id          String         @id @default(cuid())
+  title       String
+  description String
+  type        EmploymentType
+  status      JobStatus
+  listings    JobListing[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  vacancies   Vacancy[]
+
+  @@map("jobs")
+}
+
+enum JobListingType {
+  Qualification
+  Responsibility
+
+  @@map("job_listing_types")
+}
+
+model JobListing {
+  id           String         @id @default(cuid())
+  name         String
+  type         JobListingType
+  requirements String[]
+  jobId        String
+  job          Job            @relation(fields: [jobId], references: [id])
+
+  @@map("job_listings")
+}
+
+enum VacancyStatus {
+  Posted
+  Published
+  Unpublished
+
+  @@map("vacancy_statuses")
+}
+
+model Vacancy {
+  id              String         @id @default(cuid())
+  profession      String
+  roleType        String
+  employment_type EmploymentType
+  jobId           String
+  job             Job            @relation(fields: [jobId], references: [id])
+  status          JobStatus
+  postedAt        DateTime       @default(now())
+  deadline        DateTime
+
+  @@map("vacancies")
 }

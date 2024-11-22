@@ -5,8 +5,15 @@ import { Button, extendVariants, Input } from "@nextui-org/react";
 export const InputField = extendVariants(Input, {
   defaultVariants: {
     size: "sm",
-    radius: "sm",
+    radius: "none",
     variant: "bordered",
+  },
+});
+
+export const EmailField = extendVariants(InputField, {
+  defaultVariants: {
+    type: "email",
+    inputMode: "email",
   },
 });
 
