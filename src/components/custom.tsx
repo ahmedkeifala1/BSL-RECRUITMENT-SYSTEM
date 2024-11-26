@@ -20,7 +20,7 @@ export const EmailField = extendVariants(InputField, {
 export const SubmitButton = extendVariants(Button, {
   defaultVariants: {
     size: "lg",
-    radius: "sm",
+    radius: "none",
     type: "submit",
     color: "success",
   },
@@ -29,8 +29,8 @@ export const SubmitButton = extendVariants(Button, {
 export const IconButton = extendVariants(Button, {
   defaultVariants: {
     size: "sm",
-    radius: "sm",
-    isIconOnly: "true",
+    radius: "none",
     variant: "flat",
+    isIconOnly: "true",
   },
 });

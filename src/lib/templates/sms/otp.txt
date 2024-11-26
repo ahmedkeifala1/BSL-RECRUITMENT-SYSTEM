@@ -1,0 +1,1 @@
+Your OTP code is $otp. Please use this code to complete your verification. This code is valid for 15 minutes.

@@ -1,4 +1,3 @@
-import { NewOtp, OTP } from "@/app/api/token/_lib/schema";
 import { genSalt, hash } from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
 
@@ -35,21 +34,26 @@ export function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-export function signOtp<T extends object>(payload: NewOtp<T>) {
-  const otp = generateOtp();
-
-  return sign({ ...payload, otp }, process.env.JWT_SECRET as string, {
-    expiresIn: "15m",
+export function signJwt<T extends object>(payload: T, duration?: string) {
+  return sign(payload, process.env.JWT_SECRET as string, {
     algorithm: "HS256",
+    expiresIn: duration ?? "15m",
   });
 }
 
-export function verifyOtp<T extends NewOtp>(token: string) {
+export function verifyJwt<T extends object>(token: string) {
   try {
     return verify(token, process.env.JWT_SECRET as string, {
       algorithms: ["HS256"],
-    }) as OTP<T>;
+    }) as T;
   } catch {
     return null;
   }
+}
+
+export function isExpired(date: number | string | Date) {
+  const currentDate = new Date();
+  const expiryDate = date instanceof Date ? date : new Date(date);
+
+  return currentDate > expiryDate;
 }

@@ -15,7 +15,7 @@ import Navbar from "../navbar";
 export default function SiteNavbar() {
   return (
     <Navbar className="text-blue-500">
-      <Link href="/login" className="text-inherit font-bold">
+      <Link href="/auth" className="text-inherit font-bold">
         Login
       </Link>
 
@@ -39,14 +39,14 @@ export default function SiteNavbar() {
         <DropdownMenu>
           <DropdownItem
             as={Link}
-            href="/register"
+            href="/auth/register"
             startContent={<UserPlusIcon size={17} />}
           >
             Job Seeker
           </DropdownItem>
           <DropdownItem
             as={Link}
-            href="/register/employee"
+            href="/auth/register/employee"
             startContent={<UserPlus2Icon size={17} />}
           >
             Employee

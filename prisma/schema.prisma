@@ -16,14 +16,6 @@ enum EmploymentType {
   @@map("job_types")
 }
 
-enum UserType {
-  Admin
-  Staff
-  User
-
-  @@map("user_types")
-}
-
 model JobSeeker {
   id         String   @id @default(cuid())
   title      String
@@ -32,6 +24,8 @@ model JobSeeker {
   middleName String?
   fullName   String
   email      String   @unique
+  account_id String   @unique
+  account    User     @relation(fields: [account_id], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -46,6 +40,14 @@ enum UserStatus {
   @@map("user_statuses")
 }
 
+enum UserType {
+  Admin
+  Staff
+  User
+
+  @@map("user_types")
+}
+
 model User {
   id              String     @id @default(cuid())
   fullName        String
@@ -56,6 +58,7 @@ model User {
   status          UserStatus @default(Active)
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
+  details         JobSeeker?
 
   @@map("users")
 }

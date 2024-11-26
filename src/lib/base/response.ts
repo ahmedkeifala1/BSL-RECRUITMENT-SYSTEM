@@ -1,5 +1,4 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { NextApiResponse } from "next";
 
 export default class Response<T> {
   isFailure: boolean;
@@ -48,6 +47,10 @@ export class ErrorResponse extends Response<null> {
     return this.create(message, 400);
   }
 
+  static locked(message: string) {
+    return this.create(message, 423);
+  }
+
   static unauthorized(message: string) {
     return this.create(message, 401);
   }
@@ -83,5 +86,3 @@ export class ErrorResponse extends Response<null> {
     return this.create(message, code);
   }
 }
-
-export type ApiResponse<T> = NextApiResponse<Response<T>>;
