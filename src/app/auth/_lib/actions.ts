@@ -1,7 +1,7 @@
 "use server";
 
-import { Credentials } from "@/app/auth/_lib/schemas";
-import { ErrorResponse, OkResponse } from "@/lib/base/response";
+import { Credentials, LoggedUser } from "@/app/auth/_lib/schemas";
+import Response, { ErrorResponse, OkResponse } from "@/lib/base/response";
 import { ClientDatabase } from "@/lib/core/db-context";
 import { compare } from "bcrypt";
 import { getServerSideSession } from "./options";
@@ -30,7 +30,7 @@ export async function credentialsSignIn(credentials: Credentials) {
     .catch((error) => ErrorResponse.fromError(error));
 }
 
-export async function getLoggedUser() {
+export async function getLoggedUser(): Promise<Response<LoggedUser | null>> {
   return getServerSideSession().then((session) => {
     if (!session) {
       return ErrorResponse.unauthorized("Unauthorized");
@@ -38,13 +38,7 @@ export async function getLoggedUser() {
     return ClientDatabase.user
       .findUnique({
         where: { email: session.user.email as string },
-        select: {
-          id: true,
-          fullName: true,
-          userType: true,
-          isEmailVerified: true,
-          status: true,
-        },
+        omit: { password: true },
       })
       .then(
         async (res) => {

@@ -1,8 +1,16 @@
 "use client";
 
-import { Button, extendVariants, Input } from "@nextui-org/react";
+import { Button, extendVariants, Input, Select } from "@nextui-org/react";
 
 export const InputField = extendVariants(Input, {
+  defaultVariants: {
+    size: "sm",
+    radius: "none",
+    variant: "bordered",
+  },
+});
+
+export const SelectField = extendVariants(Select, {
   defaultVariants: {
     size: "sm",
     radius: "none",

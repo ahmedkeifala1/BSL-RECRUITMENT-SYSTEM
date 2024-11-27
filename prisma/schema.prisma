@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi"]
 }
 
 datasource db {
@@ -59,6 +60,7 @@ model User {
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
   details         JobSeeker?
+  profile         Staff?
 
   @@map("users")
 }
@@ -123,4 +125,38 @@ model Vacancy {
   deadline        DateTime
 
   @@map("vacancies")
+}
+
+enum AdminRole {
+  Admin
+  Director
+  Manager
+
+  @@map("admin_roles")
+}
+
+model Admin {
+  id       String    @id @default(cuid())
+  role     AdminRole
+  staff_id String    @unique
+  staff    Staff     @relation(fields: [staff_id], references: [id])
+
+  @@map("admins")
+}
+
+model Staff {
+  id            String   @id @default(cuid())
+  title         String
+  firstName     String
+  lastName      String
+  middleName    String?
+  fullName      String
+  email         String   @unique
+  admin_details Admin?
+  account_id    String   @unique
+  account       User     @relation(fields: [account_id], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("staffs")
 }
