@@ -9,8 +9,8 @@ datasource db {
 }
 
 enum EmploymentType {
-  FullTime
-  PartTime
+  Full_Time
+  Part_Time
   Contract
   Internship
 
@@ -66,9 +66,9 @@ model User {
 }
 
 enum JobStatus {
-  Opened
-  Closed
-  Pending
+  Draft
+  Approved
+  Rejected
 
   @@map("job_statuses")
 }
@@ -78,7 +78,7 @@ model Job {
   title       String
   description String
   type        EmploymentType
-  status      JobStatus
+  status      JobStatus      @default(Draft)
   listings    JobListing[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
@@ -106,7 +106,7 @@ model JobListing {
 }
 
 enum VacancyStatus {
-  Posted
+  Draft
   Published
   Unpublished
 

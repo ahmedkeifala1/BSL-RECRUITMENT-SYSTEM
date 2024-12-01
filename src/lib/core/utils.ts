@@ -1,5 +1,6 @@
 import { genSalt, hash } from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
+import { PaginatedParams, PaginationParams } from "./types";
 
 export function capitalise(
   str: string,
@@ -56,4 +57,22 @@ export function isExpired(date: number | string | Date) {
   const expiryDate = date instanceof Date ? date : new Date(date);
 
   return currentDate > expiryDate;
+}
+
+export function getPaginatedParams<T extends object>(
+  params: PaginationParams<T>,
+  defaultValue?: T
+): PaginatedParams<T> {
+  const res = {
+    ...defaultValue,
+    ...params,
+    l: params.l ?? 10,
+    p: params.p ?? 1,
+  };
+
+  return {
+    ...res,
+    skip: (res.p - 1) * res.l,
+    order: res?.o ? { [res.o as string]: res.om ?? "asc" } : undefined,
+  };
 }

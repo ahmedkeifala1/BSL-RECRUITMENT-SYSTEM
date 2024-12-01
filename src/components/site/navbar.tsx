@@ -15,7 +15,7 @@ import Navbar from "../navbar";
 export default function SiteNavbar() {
   return (
     <Navbar className="text-blue-500">
-      <Link href="/auth" className="text-inherit font-bold">
+      <Link href="/auth/gateway" className="text-inherit font-bold">
         Login
       </Link>
 
