@@ -1,9 +1,9 @@
 "use server";
 
-import { sendMail } from "@/lib/services/mail-services";
-import { Template } from "@/lib/core/template";
-import { ErrorResponse, OkResponse } from "@/lib/base/response";
+import { Template } from "@/lib/templates/template";
+import { ErrorResponse, OkResponse } from "@/lib/shared/response";
 import CookieOtpRepo from "../../verify-otp/_lib/repo";
+import { sendMail } from "@/lib/backend/services/mail-services";
 
 export async function sendEmailVerificationOtp(email: string) {
   const repo = new CookieOtpRepo({

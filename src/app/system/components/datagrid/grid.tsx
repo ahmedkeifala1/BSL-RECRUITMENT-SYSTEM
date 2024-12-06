@@ -19,7 +19,7 @@ import {
 import React, { ReactElement } from "react";
 import EmptyContent from "./empty";
 import Paging from "./paging";
-import { GridPaginateMeta } from "@/lib/core/types";
+import { GridPaginateMeta } from "@/lib/shared/types";
 
 type DataGridProps<T> = {
   data: T[];

@@ -1,4 +1,4 @@
-import { Drop } from "@/lib/core/types";
+import { Drop } from "@/lib/shared/types";
 import { ButtonProps, InputProps } from "@nextui-org/react";
 import React, { useState } from "react";
 import { IconButton, InputField } from "./custom";

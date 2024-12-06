@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar";
+import AppBar from "@/components/navbar";
 import React from "react";
 import LoginForm from "./components/login-form";
 import { Link } from "@nextui-org/react";
@@ -6,7 +6,7 @@ import { Link } from "@nextui-org/react";
 export default function LoginPage() {
   return (
     <>
-      <Navbar className="!bg-white">
+      <AppBar className="!bg-white">
         <Link
           size="sm"
           href="/auth/register/employee"
@@ -14,7 +14,7 @@ export default function LoginPage() {
         >
           Employee Registration
         </Link>
-      </Navbar>
+      </AppBar>
 
       <main className="flex-1 flex justify-center items-center">
         <div className="container max-w-sm space-y-2">
@@ -30,7 +30,7 @@ export default function LoginPage() {
           <p className="text-sm">
             Do not have an account?{" "}
             <Link
-              href="/auth/register"
+              href="/register"
               size="sm"
               className="text-blue-500 font-semibold"
             >

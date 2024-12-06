@@ -1,4 +1,4 @@
-import { Drop } from "@/lib/core/types";
+import { Drop } from "@/lib/shared/types";
 import { User } from "@prisma/client";
 import { z } from "zod";
 

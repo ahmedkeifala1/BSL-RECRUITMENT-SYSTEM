@@ -23,8 +23,6 @@ export default function VerifyOtpForm() {
     const match = await validateOtp(data);
 
     if (match.isSuccess && match.data) {
-      // await unsetCookie();
-
       return replace(`${match.data.nextUrl}?tk=${match.data.jwt}`);
     }
 

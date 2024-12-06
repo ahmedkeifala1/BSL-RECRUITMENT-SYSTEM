@@ -1,28 +1,25 @@
 "use client";
 
-import { Link } from "@nextui-org/react";
-import React, { PropsWithChildren } from "react";
+import { Link, NavbarBrand, NavbarProps } from "@nextui-org/react";
+import React from "react";
 import Logo from "./logo";
+import { Navbar } from "@nextui-org/react";
 
-type NavbarProps = PropsWithChildren & {
-  className?: string;
+type AppBarProps = NavbarProps & {
+  brandName?: string;
 };
 
-export default function Navbar({ children, className }: NavbarProps) {
+export default function AppBar({ children, brandName, ...props }: AppBarProps) {
   return (
-    <div
-      className={`bg-yellow-500 ${className} w-full flex justify-between shadow`}
-    >
-      <div className="bg-white max-w-fit py-2 px-4 leading-3 rounded-e-lg hover:ps-5 duration-100">
-        <Link href="/" className="flex gap-2" tabIndex={-1}>
-          <Logo width={32} height={32} />
-          <p className="font-bold text-inherit text-lg sm:text-xl">
-            Jobs Portal
-          </p>
-        </Link>
-      </div>
+    <Navbar {...props} maxWidth="full" isBordered={true}>
+      <NavbarBrand as={Link} href="/" className="gap-2 text-yellow-500">
+        <Logo width={32} height={32} />
+        <p className="font-bold text-inherit text-lg sm:text-xl">
+          {brandName ?? "Job Portal"}
+        </p>
+      </NavbarBrand>
 
-      <div className="px-4 py-2 flex-1 flex justify-end gap-4">{children}</div>
-    </div>
+      {children ? children : <></>}
+    </Navbar>
   );
 }

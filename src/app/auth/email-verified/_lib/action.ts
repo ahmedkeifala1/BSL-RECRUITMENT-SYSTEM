@@ -1,7 +1,7 @@
 "use server";
 
-import { ErrorResponse, OkResponse } from "@/lib/base/response";
-import Database from "@/lib/core/db-context";
+import { ErrorResponse, OkResponse } from "@/lib/shared/response";
+import Database from "@/lib/backend/database/db-context";
 import { UserStatus } from "@prisma/client";
 
 export async function verifyEmail(email: string) {

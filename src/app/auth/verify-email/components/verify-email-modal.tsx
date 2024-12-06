@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import Response from "@/lib/base/response";
+import Response from "@/lib/shared/response";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { setCookie } from "../_lib/actions";

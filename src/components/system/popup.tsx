@@ -1,6 +1,6 @@
 "use client";
 
-import { Drop } from "@/lib/core/types";
+import { Drop } from "@/lib/shared/types";
 import {
   Button,
   ButtonProps,
@@ -106,6 +106,22 @@ Popup.CancelButton = function PopupCancelButton({
   return (
     <Popup.Button onPress={onClose} {...props}>
       {children ?? "Cancel"}
+    </Popup.Button>
+  );
+};
+
+Popup.SubmitButton = function PopupSubmitButton({
+  children,
+  ...props
+}: Drop<ButtonProps, "type">) {
+  return (
+    <Popup.Button
+      color="success"
+      className="font-semibold"
+      {...props}
+      type="submit"
+    >
+      {children ?? "Submit"}
     </Popup.Button>
   );
 };

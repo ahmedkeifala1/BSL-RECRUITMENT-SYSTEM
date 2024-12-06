@@ -1,6 +1,6 @@
 "use client";
 
-import { Drop } from "@/lib/core/types";
+import { Drop } from "@/lib/shared/types";
 import {
   Button,
   Dropdown,

@@ -1,10 +1,10 @@
 "use client";
 
-import { Drop, GridPaginateMeta } from "@/lib/core/types";
-import { getShowingRecordsText } from "@/lib/core/functions";
+import { Drop, GridPaginateMeta } from "@/lib/shared/types";
 import { Pagination, PaginationProps } from "@nextui-org/react";
 import React from "react";
-import useNavigation from "@/lib/hooks/navigation-hook";
+import useNavigation from "@/lib/frontend/hooks/navigation-hook";
+import { getShowingRecordsText } from "@/lib/frontend/utils";
 
 type PagingProps = {
   pageCount: number;

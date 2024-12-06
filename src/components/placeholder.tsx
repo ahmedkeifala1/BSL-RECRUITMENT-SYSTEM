@@ -12,7 +12,7 @@ export default function Placeholder({
   condition,
 }: Readonly<WithSkeletonFieldProps>) {
   return condition ? (
-    <Skeleton {...props} className={`h-10 rounded-lg ${props?.className}`} />
+    <Skeleton {...props} className={`h-10 rounded-none ${props?.className}`} />
   ) : (
     children
   );

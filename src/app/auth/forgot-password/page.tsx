@@ -1,7 +1,7 @@
 "use client";
 
 import { EmailField, SubmitButton } from "@/components/custom";
-import Navbar from "@/components/navbar";
+import AppBar from "@/components/navbar";
 import { Link } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -38,14 +38,14 @@ export default function ForgotPasswordPage() {
   }
   return (
     <>
-      <Navbar className="!bg-white items-center">
+      <AppBar className="!bg-white items-center">
         <p className="text-sm font-semibold text-slate-600">
           Need help?{" "}
           <Link size="sm" href="/help" className="text-blue-500 font-semibold">
             Contact us
           </Link>
         </p>
-      </Navbar>
+      </AppBar>
 
       <main className="flex-1 md:bg-zinc-50 flex flex-col md:justify-center items-center py-6">
         <div className="container md:max-w-xl space-y-2 md:shadow md:border bg-white p-6">

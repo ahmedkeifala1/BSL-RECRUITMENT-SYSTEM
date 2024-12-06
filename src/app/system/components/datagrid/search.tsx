@@ -4,7 +4,7 @@ import React from "react";
 import { SearchIcon } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
 import { InputField } from "@/components/custom";
-import useNavigation from "@/lib/hooks/navigation-hook";
+import useNavigation from "@/lib/frontend/hooks/navigation-hook";
 
 export default function SearchInput() {
   const { navigate, searchParams } = useNavigation();

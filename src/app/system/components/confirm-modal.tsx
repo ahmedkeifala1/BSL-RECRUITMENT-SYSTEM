@@ -59,21 +59,6 @@ export default function ConfirmModal(props: Readonly<ConfirmModalProps>) {
         >
           {props.yesBtnProps?.title ?? "Confirm"}
         </Popup.Button>
-
-        {/* <Button
-          onPress={props.onHide}
-          {...props.noBtnProps}
-          radius="sm"
-        ></Button>
-        <Button
-          color="danger"
-          onPress={handleConfirm}
-          {...props.yesBtnProps}
-          isLoading={processing}
-          radius="sm"
-        >
-          {props.yesBtnProps?.title ?? "Confirm"}
-        </Button> */}
       </Popup.Footer>
     </Popup>
   );

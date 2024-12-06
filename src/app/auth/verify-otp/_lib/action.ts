@@ -2,8 +2,8 @@
 
 import { compare } from "bcrypt";
 import { CookieToken, VerifyOtp } from "./schemas";
-import { ErrorResponse, OkResponse } from "@/lib/base/response";
-import { signJwt } from "@/lib/core/utils";
+import { ErrorResponse, OkResponse } from "@/lib/shared/response";
+import { signJwt } from "@/lib/backend/utils";
 import CookieOtpRepo from "./repo";
 
 export async function validateOtp(data: VerifyOtp) {

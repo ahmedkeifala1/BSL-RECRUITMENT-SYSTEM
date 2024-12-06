@@ -1,11 +1,11 @@
 "use server";
 
 import { ForgotPassword } from "./schemas";
-import { Template } from "@/lib/core/template";
-import Database from "@/lib/core/db-context";
-import { ErrorResponse, OkResponse } from "@/lib/base/response";
-import { sendMail } from "@/lib/services/mail-services";
+import { Template } from "@/lib/templates/template";
+import Database from "@/lib/backend/database/db-context";
+import { ErrorResponse, OkResponse } from "@/lib/shared/response";
 import CookieOtpRepo from "../../verify-otp/_lib/repo";
+import { sendMail } from "@/lib/backend/services/mail-services";
 
 export async function sendPasswordResetCode(data: ForgotPassword) {
   return await Database.user

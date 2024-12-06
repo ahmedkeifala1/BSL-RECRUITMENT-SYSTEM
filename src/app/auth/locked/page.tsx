@@ -3,25 +3,25 @@ import { getLoggedUser } from "../_lib/actions";
 import { redirect } from "next/navigation";
 import { Link } from "@nextui-org/react";
 import LoginWithOtherAccountButton from "./components/other-login";
-import Navbar from "@/components/navbar";
+import AppBar from "@/components/navbar";
 
 export default async function AccountLocked() {
   const logged = await getLoggedUser();
 
   if (logged.code !== 423) {
-    return redirect("/auth/gateway");
+    return redirect("/auth");
   }
 
   return (
     <>
-      <Navbar className="!bg-white items-center">
+      <AppBar className="!bg-white items-center">
         <p className="text-sm font-semibold text-slate-600">
           Need help?{" "}
           <Link size="sm" href="/help" className="text-blue-500 font-semibold">
             Contact us
           </Link>
         </p>
-      </Navbar>
+      </AppBar>
 
       <main className="flex-1 flex justify-center items-center">
         <div className="container max-w-sm space-y-2">

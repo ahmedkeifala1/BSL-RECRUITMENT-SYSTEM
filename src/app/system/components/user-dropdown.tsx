@@ -5,22 +5,26 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownSection,
   DropdownTrigger,
   Link,
   User,
 } from "@nextui-org/react";
-import { LogOutIcon, Settings2Icon } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import React from "react";
+import { Icon } from "@/lib/frontend/icons";
+import { Route } from "../_lib/schema";
 
 type UserDropdownProps = {
   user: LoggedUser;
+  routes?: Route[];
 };
 
-export default function UserDropdown({ user }: UserDropdownProps) {
+export default function UserDropdown({ user, routes }: UserDropdownProps) {
   return (
     <Dropdown radius="none" placement="bottom-end" className="border">
-      <DropdownTrigger>
+      <DropdownTrigger className="text-blue-800">
         <User
           as="button"
           avatarProps={{
@@ -30,7 +34,8 @@ export default function UserDropdown({ user }: UserDropdownProps) {
           name={user.fullName}
           description={user.email}
           classNames={{
-            name: "font-semibold",
+            name: "font-bold",
+            description: "text-blue-400",
           }}
         />
       </DropdownTrigger>
@@ -40,10 +45,24 @@ export default function UserDropdown({ user }: UserDropdownProps) {
           as={Link}
           href="/system/profile"
           className="text-foreground"
-          endContent={<Settings2Icon size={15} />}
+          endContent={<Icon name="Settings2Icon" />}
         >
           Profile
         </DropdownItem>
+
+        <DropdownSection items={routes ?? ([] as Route[])} showDivider={true}>
+          {(route) => (
+            <DropdownItem
+              as={Link}
+              href={route.href}
+              className="text-foreground"
+              key={`custom-route-${route.href}`}
+              endContent={<Icon name={route.icon} />}
+            >
+              {route.title}
+            </DropdownItem>
+          )}
+        </DropdownSection>
 
         <DropdownItem
           as={Link}

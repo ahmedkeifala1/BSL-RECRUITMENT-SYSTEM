@@ -3,8 +3,8 @@
 import useNavigation, {
   NavPath,
   NavPathClear,
-} from "@/lib/hooks/navigation-hook";
-import { Drop } from "@/lib/core/types";
+} from "@/lib/frontend/hooks/navigation-hook";
+import { Drop } from "@/lib/shared/types";
 import { Button, ButtonProps } from "@nextui-org/react";
 import React from "react";
 
@@ -27,7 +27,7 @@ export default function NavActionButton({
       radius="none"
       variant="light"
       color="success"
-      className="font-semibold"
+      className="font-semibold gap-1"
       {...props}
       onPress={() => navigate(nav, clear)}
     >

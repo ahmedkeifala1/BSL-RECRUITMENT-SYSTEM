@@ -1,7 +1,7 @@
-import { verifyJwt } from "@/lib/core/utils";
 import { verifyEmail } from "./_lib/action";
 import { redirect } from "next/navigation";
 import { CookieToken } from "../verify-otp/_lib/schemas";
+import { verifyJwt } from "@/lib/backend/utils";
 
 type EmailVerifiedPageProps = {
   searchParams: { tk: string };
@@ -14,8 +14,9 @@ export default async function EmailVerifiedPage({
 
   if (token) {
     const verified = await verifyEmail(token?.receiver as string);
+
     if (verified.isSuccess) {
-      return redirect("/auth/gateway");
+      return redirect("/auth");
     }
   }
 

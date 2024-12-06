@@ -4,7 +4,7 @@ import React from "react";
 export default function Loader({
   message,
 }: {
-  message: string | React.ReactNode;
+  message?: string | React.ReactNode;
 }) {
   return (
     <div className="flex-1 flex justify-center gap-3 items-center fixed top-0 left-0 w-screen h-screen backdrop-blur z-10">

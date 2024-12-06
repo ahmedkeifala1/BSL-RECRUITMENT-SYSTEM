@@ -1,22 +1,34 @@
 "use client";
 
-import { Drop } from "@/lib/core/types";
-import { Select, SelectItem, SelectProps } from "@nextui-org/react";
+import { Drop } from "@/lib/shared/types";
+import {
+  Select,
+  SelectItem,
+  SelectProps,
+  SharedSelection,
+} from "@nextui-org/react";
 import { useMemo } from "react";
 
-type SelectItemFieldProps = {
-  source: number | object;
+type SelectItemFieldProps<T> = {
   prefix?: string;
   suffix?: string;
+  source: number | object;
   props?: Drop<SelectProps, "children" | "items">;
+  setSelected?: (item: SelectItem<T>) => void;
 };
 
-export function SelectItemField({
+export type SelectItem<T> = {
+  key: T;
+  value: string | number;
+};
+
+export function SelectItemField<T>({
   source,
   prefix,
   suffix,
   props,
-}: SelectItemFieldProps) {
+  setSelected,
+}: SelectItemFieldProps<T>) {
   const items = useMemo(() => {
     let arr: string[] = [];
     if (typeof source === "number") {
@@ -25,11 +37,22 @@ export function SelectItemField({
       arr = Object.keys(source).map((k) => k.toString());
     }
 
-    return arr.map((k) => ({
-      key: k,
+    return arr.map<SelectItem<T>>((k) => ({
+      key: k as unknown as T,
       value: `${prefix ?? ""}${k.replaceAll("_", " ")}${suffix ?? ""}`,
     }));
   }, [source, prefix, suffix]);
+
+  function handleSelectionChanged(keys: SharedSelection) {
+    if (setSelected) {
+      const key = new Set(keys).values().next().value;
+      const item = items.find((item) => item.key === key);
+
+      if (item) {
+        setSelected(item);
+      }
+    }
+  }
 
   return (
     <Select
@@ -41,9 +64,14 @@ export function SelectItemField({
       classNames={{
         popoverContent: "rounded-none",
       }}
+      onSelectionChange={handleSelectionChanged}
     >
       {(item) => (
-        <SelectItem key={item.key} value={item.key} textValue={item.value}>
+        <SelectItem
+          key={item.key as string}
+          value={item.key as string}
+          textValue={item.value.toString()}
+        >
           {item.value}
         </SelectItem>
       )}

@@ -1,4 +1,4 @@
-import { Drop } from "@/lib/core/types";
+import { Drop } from "@/lib/shared/types";
 import { z } from "zod";
 
 export const NewOtpSchema = z.object({

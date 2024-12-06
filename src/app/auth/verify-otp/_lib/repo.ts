@@ -1,7 +1,8 @@
-import { hashPassword, isExpired, signJwt, verifyJwt } from "@/lib/core/utils";
+import { hashPassword, signJwt, verifyJwt } from "@/lib/backend/utils";
 import { CookieOtp, CreateCookieOtp } from "./schemas";
 import { cookies } from "next/headers";
-import { ErrorResponse, OkResponse } from "@/lib/base/response";
+import { ErrorResponse, OkResponse } from "@/lib/shared/response";
+import { isExpired } from "@/lib/shared/utils";
 
 export default class CookieOtpRepo<T extends object> {
   otp: string;

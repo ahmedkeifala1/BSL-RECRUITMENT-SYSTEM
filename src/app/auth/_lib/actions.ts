@@ -1,8 +1,8 @@
 "use server";
 
 import { Credentials, LoggedUser } from "@/app/auth/_lib/schemas";
-import Response, { ErrorResponse, OkResponse } from "@/lib/base/response";
-import { ClientDatabase } from "@/lib/core/db-context";
+import Response, { ErrorResponse, OkResponse } from "@/lib/shared/response";
+import { ClientDatabase } from "@/lib/backend/database/db-context";
 import { compare } from "bcrypt";
 import { getServerSideSession } from "./options";
 import { UserStatus } from "@prisma/client";

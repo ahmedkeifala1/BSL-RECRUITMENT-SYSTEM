@@ -1,10 +1,10 @@
-import Navbar from "@/components/navbar";
-import { verifyJwt } from "@/lib/core/utils";
+import AppBar from "@/components/navbar";
 import { Link } from "@nextui-org/react";
 import React from "react";
 import ResetPasswordForm from "./components/reset-password-form";
 import { redirect } from "next/navigation";
 import { CookieToken } from "../verify-otp/_lib/schemas";
+import { verifyJwt } from "@/lib/backend/utils";
 
 type ResetPasswordPageProps = {
   searchParams: { tk: string };
@@ -21,14 +21,14 @@ export default function ResetPasswordPage({
 
   return (
     <>
-      <Navbar className="!bg-white items-center">
+      <AppBar className="!bg-white items-center">
         <p className="text-sm font-semibold text-slate-600">
           Need help?{" "}
           <Link size="sm" href="/help" className="text-blue-500 font-semibold">
             Contact us
           </Link>
         </p>
-      </Navbar>
+      </AppBar>
 
       <main className="flex-1 md:bg-zinc-50 flex flex-col md:justify-center items-center py-6">
         <div className="container md:max-w-xl space-y-2 md:shadow md:border bg-white p-6">

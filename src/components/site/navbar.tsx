@@ -1,58 +1,36 @@
-"use client";
-
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Link,
-} from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
 import React from "react";
-import { UserPlus2Icon, UserPlusIcon } from "lucide-react";
-import Navbar from "../navbar";
+import AppBar from "../navbar";
+import { getLoggedUser } from "@/app/auth/_lib/actions";
+import UserDropdown from "@/app/system/components/user-dropdown";
+import RegisterButton from "./register-button";
+import { getResponseData } from "@/lib/shared/utils";
 
-export default function SiteNavbar() {
+export default async function SiteNavbar() {
+  const userData = await getLoggedUser();
+  const user = getResponseData(userData);
+
   return (
-    <Navbar className="text-blue-500">
-      <Link href="/auth/gateway" className="text-inherit font-bold">
-        Login
-      </Link>
-
-      <Dropdown
-        radius="sm"
-        showArrow={true}
-        placement="bottom-end"
-        className="border border-primary-100"
-      >
-        <DropdownTrigger>
-          <Button
-            size="sm"
-            color="primary"
-            radius="sm"
-            className="text-xs font-semibold"
-          >
-            Register
-          </Button>
-        </DropdownTrigger>
-
-        <DropdownMenu>
-          <DropdownItem
-            as={Link}
-            href="/auth/register"
-            startContent={<UserPlusIcon size={17} />}
-          >
-            Job Seeker
-          </DropdownItem>
-          <DropdownItem
-            as={Link}
-            href="/auth/register/employee"
-            startContent={<UserPlus2Icon size={17} />}
-          >
-            Employee
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </Navbar>
+    <AppBar>
+      {userData.data ? (
+        <UserDropdown
+          user={userData.data}
+          routes={[
+            {
+              title: "Dashboard",
+              icon: "HomeIcon",
+              href: `/system/${user.userType?.toLowerCase()}`,
+            },
+          ]}
+        />
+      ) : (
+        <>
+          <Link href="/auth" className="text-primary font-semibold">
+            Login
+          </Link>
+          <RegisterButton />
+        </>
+      )}
+    </AppBar>
   );
 }

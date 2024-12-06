@@ -9,11 +9,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import { Link } from "@nextui-org/react";
+import useNavigation from "@/lib/frontend/hooks/navigation-hook";
 
 export default function LoginForm() {
-  const { replace } = useRouter();
+  const { replace, searchParams: params } = useNavigation();
   const {
     register,
     handleSubmit,
@@ -29,7 +29,11 @@ export default function LoginForm() {
     });
 
     if (res && res.ok && !res.error) {
-      return replace("/auth/gateway");
+      if (params.has("return")) {
+        return replace(params.get("return") as string);
+      }
+
+      return window.location.reload();
     }
 
     return toast.error(res?.error);

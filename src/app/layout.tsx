@@ -4,6 +4,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Provider from "./provider";
+import PreviewDocument from "../components/preview-document";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,6 +39,8 @@ export default function RootLayout({
         <Provider>
           <div className="min-h-screen flex flex-col">{children}</div>
         </Provider>
+
+        <PreviewDocument />
 
         <ToastContainer
           position="top-right"

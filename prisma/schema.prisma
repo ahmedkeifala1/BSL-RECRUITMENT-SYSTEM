@@ -18,17 +18,19 @@ enum EmploymentType {
 }
 
 model JobSeeker {
-  id         String   @id @default(cuid())
-  title      String
-  firstName  String
-  lastName   String
-  middleName String?
-  fullName   String
-  email      String   @unique
-  account_id String   @unique
-  account    User     @relation(fields: [account_id], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           String              @id @default(cuid())
+  title        String
+  firstName    String
+  lastName     String
+  middleName   String?
+  fullName     String
+  email        String              @unique
+  account_id   String              @unique
+  account      User                @relation(fields: [account_id], references: [id])
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  applications Application[]
+  documents    JobSeekerDocument[]
 
   @@map("job_seekers")
 }
@@ -66,7 +68,7 @@ model User {
 }
 
 enum JobStatus {
-  Draft
+  Drafted
   Approved
   Rejected
 
@@ -78,7 +80,7 @@ model Job {
   title       String
   description String
   type        EmploymentType
-  status      JobStatus      @default(Draft)
+  status      JobStatus      @default(Drafted)
   listings    JobListing[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
@@ -100,13 +102,13 @@ model JobListing {
   type         JobListingType
   requirements String[]
   jobId        String
-  job          Job            @relation(fields: [jobId], references: [id])
+  job          Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@map("job_listings")
 }
 
 enum VacancyStatus {
-  Draft
+  Drafted
   Published
   Unpublished
 
@@ -114,15 +116,16 @@ enum VacancyStatus {
 }
 
 model Vacancy {
-  id              String         @id @default(cuid())
-  profession      String
-  roleType        String
-  employment_type EmploymentType
-  jobId           String
-  job             Job            @relation(fields: [jobId], references: [id])
-  status          JobStatus
-  postedAt        DateTime       @default(now())
-  deadline        DateTime
+  id             String         @id @default(cuid())
+  profession     String
+  roleType       String
+  employmentType EmploymentType
+  jobId          String
+  job            Job            @relation(fields: [jobId], references: [id])
+  status         VacancyStatus  @default(Drafted)
+  postedAt       DateTime       @default(now())
+  deadline       DateTime
+  applicants     Application[]
 
   @@map("vacancies")
 }
@@ -144,6 +147,13 @@ model Admin {
   @@map("admins")
 }
 
+enum Gender {
+  Female
+  Male
+
+  @@map("genders")
+}
+
 model Staff {
   id            String   @id @default(cuid())
   title         String
@@ -151,6 +161,11 @@ model Staff {
   lastName      String
   middleName    String?
   fullName      String
+  designation   String
+  department    String
+  division      String
+  unit          String
+  gender        Gender   @default(Male)
   email         String   @unique
   admin_details Admin?
   account_id    String   @unique
@@ -159,4 +174,75 @@ model Staff {
   updatedAt     DateTime @updatedAt
 
   @@map("staffs")
+}
+
+enum ApplicationStatus {
+  Hired
+  Reviewed
+  Rejected
+  Submitted
+  Shortlisted
+
+  @@map("application_statuses")
+}
+
+model Application {
+  id            String                @id @default(cuid())
+  status        ApplicationStatus     @default(Submitted)
+  jobSeekerId   String
+  jobSeeker     JobSeeker             @relation(fields: [jobSeekerId], references: [id])
+  vacancyId     String
+  vacancy       Vacancy               @relation(fields: [vacancyId], references: [id])
+  cvId          String                @unique
+  cv            JobSeekerDocument     @relation(fields: [cvId], references: [id])
+  coverLetterId String                @unique
+  coverLetter   Document              @relation(fields: [coverLetterId], references: [id])
+  documents     ApplicationDocument[]
+
+  @@map("applications")
+}
+
+model ApplicationDocument {
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id])
+  documentId    String
+  document      Document    @relation(fields: [documentId], references: [id])
+
+  @@id([applicationId, documentId])
+  @@map("application_documents")
+}
+
+enum JobSeekerDocumentType {
+  Curriculum_Vitae
+  Certification
+  Cover_Letter
+  Identification
+  Other
+
+  @@map("job_seeker_document_types")
+}
+
+model JobSeekerDocument {
+  id           String                @id @default(cuid())
+  type         JobSeekerDocumentType
+  jobSeekerId  String
+  jobSeeker    JobSeeker             @relation(fields: [jobSeekerId], references: [id])
+  documentId   String
+  document     Document              @relation(fields: [documentId], references: [id])
+  applications Application[]
+
+  @@map("job_seeker_documents")
+}
+
+model Document {
+  id           String                @id @default(cuid())
+  name         String
+  url          String
+  type         String
+  size         BigInt
+  jobSeekers   JobSeekerDocument[]
+  letters      Application[]
+  applications ApplicationDocument[]
+
+  @@map("documents")
 }

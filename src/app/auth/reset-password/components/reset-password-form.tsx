@@ -33,8 +33,6 @@ export default function ResetPasswordForm({ email }: { email: string }) {
     toast(res.message, { type: res.isSuccess ? "success" : "error" });
   }
 
-  console.log(errors);
-
   return (
     <form
       className="flex flex-col gap-4"

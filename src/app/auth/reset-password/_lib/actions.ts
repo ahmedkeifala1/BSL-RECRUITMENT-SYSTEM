@@ -1,9 +1,9 @@
 "use server";
 
-import Database from "@/lib/core/db-context";
+import Database from "@/lib/backend/database/db-context";
 import { ResetPassword } from "./schemas";
-import { hashPassword } from "@/lib/core/utils";
-import { ErrorResponse, OkResponse } from "@/lib/base/response";
+import { ErrorResponse, OkResponse } from "@/lib/shared/response";
+import { hashPassword } from "@/lib/backend/utils";
 
 export async function resetPassword(data: ResetPassword) {
   const hash = await hashPassword(data.password);

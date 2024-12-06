@@ -14,6 +14,7 @@ const authOptions: AuthOptions = {
       if (user) {
         token.type = user.type;
       }
+
       return token;
     },
 

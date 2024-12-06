@@ -4,7 +4,7 @@ import { Button, cn, Link } from "@nextui-org/react";
 import React from "react";
 import * as Icons from "lucide-react";
 import { usePathname } from "next/navigation";
-import { Route } from "../(admins)/_lib/schema";
+import { Route } from "../_lib/schema";
 
 ToolBar.Button = function ToolBarButton({
   route,

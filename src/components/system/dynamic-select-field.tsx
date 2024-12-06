@@ -8,12 +8,12 @@ import {
 } from "@nextui-org/react";
 import { Prisma } from "@prisma/client";
 import React, { PropsWithChildren } from "react";
-import Response from "@/lib/base/response";
-import { Drop } from "@/lib/core/types";
+import Response from "@/lib/shared/response";
+import { Drop } from "@/lib/shared/types";
 import { useQuery } from "@tanstack/react-query";
-import { getResponseData } from "@/lib/core/functions";
 import Placeholder from "../placeholder";
-import Database from "@/lib/core/db-context";
+import Database from "@/lib/backend/database/db-context";
+import { getResponseData } from "@/lib/shared/utils";
 
 export type SelectObject<T extends object = object> = T & {
   id: string | number;
@@ -86,11 +86,15 @@ export default function DynamicSelectField<
     <Placeholder condition={isFetching}>
       <Select
         size="sm"
-        radius="sm"
+        radius="none"
         variant="bordered"
         {...props}
         items={items}
         isLoading={isFetching}
+        classNames={{
+          ...props?.classNames,
+          popoverContent: "rounded-none",
+        }}
         isInvalid={
           data?.isFailure || (items.length < 1 && enabled) || props?.isInvalid
         }
