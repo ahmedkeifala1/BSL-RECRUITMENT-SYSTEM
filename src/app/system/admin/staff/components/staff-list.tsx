@@ -71,7 +71,7 @@ export default function StaffList({ meta, staff }: ListStaffProps) {
                   className="text-danger"
                   isDisabled={staff.isAdmin}
                   startContent={<TrashIcon size={15} />}
-                  href={`?v=delete&id=${staff.id}`}
+                  href={`?v=remove&id=${staff.id}`}
                 >
                   Delete
                 </MoreAction.Item>

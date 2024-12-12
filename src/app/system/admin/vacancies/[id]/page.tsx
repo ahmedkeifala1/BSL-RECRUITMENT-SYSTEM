@@ -26,7 +26,7 @@ export default async function JobDetailsPage({
   const user = getResponseData(userData);
   const vacancy = getResponseData(jobData);
   const admin = getResponseData(adminData);
-  const isDirector = admin.role === "Manager";
+  const isDirector = admin.role === "Director";
 
   return (
     <>

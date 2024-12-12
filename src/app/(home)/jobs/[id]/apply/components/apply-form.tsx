@@ -96,7 +96,9 @@ export default function ApplyForm({ vacancyId, jobSeekerId }: ApplyFormProps) {
             errorMessage: errors.otherDocumentsId?.message,
           }}
           where={{
-            type: "Other",
+            type: {
+              notIn: ["Cover_Letter", "Curriculum_Vitae"],
+            },
           }}
           valueKey="documentId"
           jobSeekerId={jobSeekerId}

@@ -10,7 +10,7 @@ export class Template<T> {
     );
 
     data.forEach((content) => {
-      file_content = file_content.replace(`$${content.key}`, content.value);
+      file_content = file_content.replaceAll(`$${content.key}`, content.value);
     });
 
     return file_content;
@@ -33,4 +33,8 @@ export class Template<T> {
   static readonly APPLICATION_STATUS_CHANGED = new Template<
     "applicant" | "job" | "status"
   >("/email/application-status-changed.html");
+
+  static readonly STAFF_CREATED = new Template<
+    "fullName" | "designation" | "password" | "email" | "url"
+  >("/email/staff-created.html");
 }

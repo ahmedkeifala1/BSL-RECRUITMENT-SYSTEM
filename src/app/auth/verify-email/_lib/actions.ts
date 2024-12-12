@@ -44,8 +44,8 @@ export async function sendEmailVerificationOtp(email: string) {
   return ErrorResponse.create(sent.message, sent.code);
 }
 
-export async function setCookie(token: string) {
-  await CookieOtpRepo.signInCookie(token);
+export async function setCookie(token: string, duration?: number) {
+  await CookieOtpRepo.signInCookie(token, duration);
 }
 
 // export async function setCookie(token: string, duration?: number) {

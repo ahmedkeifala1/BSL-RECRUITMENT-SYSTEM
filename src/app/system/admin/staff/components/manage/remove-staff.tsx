@@ -20,7 +20,7 @@ export default function RemoveStaff() {
   }
 
   return (
-    searchParams.has("remove") && (
+    searchParams.get("v") === "remove" && (
       <ConfirmModal
         entity="Staff"
         action="Delete"

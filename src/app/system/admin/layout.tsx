@@ -20,12 +20,19 @@ export default async function AdminLayout({
 
   const admin = getResponseData(logged);
   const routes = getRoutes(admin.role);
-  const pathname = getPathname().replace("/system/admin", "");
+  let pathname = getPathname();
+
+  if (pathname.indexOf("/system/admin") > -1) {
+    pathname = pathname.replace("/system/admin", "");
+  } else {
+    pathname = "";
+  }
+
   const isAuth =
     pathname.length < 1 ||
     routes.some((route) => pathname.startsWith(route.href));
 
-  if (pathname.length > 0 && !isAuth) {
+  if (!isAuth) {
     return <Unauthorised message="Unauthorised" />;
   }
 

@@ -20,7 +20,7 @@ export default async function ApplicationsPage({
   const { skip, ...meta } = getPaginatedParams(searchParams);
   const jobSeeker = getResponseData(await getAuthJobSeeker());
   const [total, applicationsData] = await getJobSeekerApplications(
-    { id: jobSeeker.id },
+    { id: jobSeeker?.id || "" },
     {
       skip,
       take: meta.l,

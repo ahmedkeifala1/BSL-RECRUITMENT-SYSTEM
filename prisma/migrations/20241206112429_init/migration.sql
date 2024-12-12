@@ -19,6 +19,15 @@ CREATE TYPE "vacancy_statuses" AS ENUM ('Drafted', 'Published', 'Unpublished');
 -- CreateEnum
 CREATE TYPE "admin_roles" AS ENUM ('Admin', 'Director', 'Manager');
 
+-- CreateEnum
+CREATE TYPE "genders" AS ENUM ('Female', 'Male');
+
+-- CreateEnum
+CREATE TYPE "application_statuses" AS ENUM ('Hired', 'Reviewed', 'Rejected', 'Submitted', 'Shortlisted');
+
+-- CreateEnum
+CREATE TYPE "job_seeker_document_types" AS ENUM ('Curriculum_Vitae', 'Certification', 'Cover_Letter', 'Identification', 'Other');
+
 -- CreateTable
 CREATE TABLE "job_seekers" (
     "id" TEXT NOT NULL,
@@ -79,7 +88,7 @@ CREATE TABLE "vacancies" (
     "id" TEXT NOT NULL,
     "profession" TEXT NOT NULL,
     "roleType" TEXT NOT NULL,
-    "employment_type" "job_types" NOT NULL,
+    "employmentType" "job_types" NOT NULL,
     "jobId" TEXT NOT NULL,
     "status" "vacancy_statuses" NOT NULL DEFAULT 'Drafted',
     "postedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -105,12 +114,58 @@ CREATE TABLE "staffs" (
     "lastName" TEXT NOT NULL,
     "middleName" TEXT,
     "fullName" TEXT NOT NULL,
+    "designation" TEXT NOT NULL,
+    "department" TEXT NOT NULL,
+    "division" TEXT NOT NULL,
+    "unit" TEXT NOT NULL,
+    "gender" "genders" NOT NULL DEFAULT 'Male',
     "email" TEXT NOT NULL,
     "account_id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "staffs_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "applications" (
+    "id" TEXT NOT NULL,
+    "status" "application_statuses" NOT NULL DEFAULT 'Submitted',
+    "jobSeekerId" TEXT NOT NULL,
+    "vacancyId" TEXT NOT NULL,
+    "cvId" TEXT NOT NULL,
+    "coverLetterId" TEXT NOT NULL,
+
+    CONSTRAINT "applications_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "application_documents" (
+    "applicationId" TEXT NOT NULL,
+    "documentId" TEXT NOT NULL,
+
+    CONSTRAINT "application_documents_pkey" PRIMARY KEY ("applicationId","documentId")
+);
+
+-- CreateTable
+CREATE TABLE "job_seeker_documents" (
+    "id" TEXT NOT NULL,
+    "type" "job_seeker_document_types" NOT NULL,
+    "jobSeekerId" TEXT NOT NULL,
+    "documentId" TEXT NOT NULL,
+
+    CONSTRAINT "job_seeker_documents_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "documents" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "size" BIGINT NOT NULL,
+
+    CONSTRAINT "documents_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -131,6 +186,12 @@ CREATE UNIQUE INDEX "staffs_email_key" ON "staffs"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "staffs_account_id_key" ON "staffs"("account_id");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "applications_cvId_key" ON "applications"("cvId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "applications_coverLetterId_key" ON "applications"("coverLetterId");
+
 -- AddForeignKey
 ALTER TABLE "job_seekers" ADD CONSTRAINT "job_seekers_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -145,3 +206,27 @@ ALTER TABLE "admins" ADD CONSTRAINT "admins_staff_id_fkey" FOREIGN KEY ("staff_i
 
 -- AddForeignKey
 ALTER TABLE "staffs" ADD CONSTRAINT "staffs_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "applications" ADD CONSTRAINT "applications_jobSeekerId_fkey" FOREIGN KEY ("jobSeekerId") REFERENCES "job_seekers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "applications" ADD CONSTRAINT "applications_vacancyId_fkey" FOREIGN KEY ("vacancyId") REFERENCES "vacancies"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "applications" ADD CONSTRAINT "applications_cvId_fkey" FOREIGN KEY ("cvId") REFERENCES "job_seeker_documents"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "applications" ADD CONSTRAINT "applications_coverLetterId_fkey" FOREIGN KEY ("coverLetterId") REFERENCES "documents"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "application_documents" ADD CONSTRAINT "application_documents_applicationId_fkey" FOREIGN KEY ("applicationId") REFERENCES "applications"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "application_documents" ADD CONSTRAINT "application_documents_documentId_fkey" FOREIGN KEY ("documentId") REFERENCES "documents"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "job_seeker_documents" ADD CONSTRAINT "job_seeker_documents_jobSeekerId_fkey" FOREIGN KEY ("jobSeekerId") REFERENCES "job_seekers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "job_seeker_documents" ADD CONSTRAINT "job_seeker_documents_documentId_fkey" FOREIGN KEY ("documentId") REFERENCES "documents"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

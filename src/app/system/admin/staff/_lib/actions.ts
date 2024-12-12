@@ -5,7 +5,8 @@ import { ErrorResponse, OkResponse } from "@/lib/shared/response";
 import { Drop } from "@/lib/shared/types";
 import { Prisma } from "@prisma/client";
 import { AddEditStaff } from "./schema";
-import { hashPassword } from "@/lib/backend/utils";
+import { generateOtp, hashPassword, raise } from "@/lib/backend/utils";
+import StaffEvent from "./events";
 
 export async function getStaff(where: Prisma.StaffWhereUniqueInput) {
   return Database.staff
@@ -44,7 +45,8 @@ export async function listStaff(
 }
 
 export async function addStaff({ title, ...data }: AddEditStaff) {
-  const password = await hashPassword("Staff@2024!");
+  const plain = generateOtp();
+  const password = await hashPassword(plain);
 
   return Database.staff
     .create({
@@ -61,9 +63,17 @@ export async function addStaff({ title, ...data }: AddEditStaff) {
           },
         },
       },
+      select: {
+        designation: true,
+        email: true,
+        fullName: true,
+      },
     })
     .then(
-      () => OkResponse.created(true, "Staff added successfully"),
+      (created) => {
+        raise(StaffEvent.staffCreated, { ...created, password: plain });
+        return OkResponse.created(true, "Staff added successfully");
+      },
       (error) => ErrorResponse.fromError(error)
     )
     .catch((error) => ErrorResponse.fromError(error));
@@ -88,9 +98,18 @@ export async function removeStaff(where: Prisma.StaffWhereUniqueInput) {
   return Database.staff
     .delete({
       where,
+      select: {
+        email: true,
+      },
     })
     .then(
-      () => OkResponse.create(true, { message: "Staff removed successfully" }),
+      (deleted) => {
+        raise(StaffEvent.staffDeleted, deleted);
+
+        return OkResponse.create(true, {
+          message: "Staff removed successfully",
+        });
+      },
       (error) => ErrorResponse.fromError(error)
     );
 }

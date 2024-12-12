@@ -6,7 +6,7 @@ import React from "react";
 
 export default function ApplicationSuccess() {
   const { replace, searchParams } = useNavigation();
-  const show = searchParams.get("m") === "application-success";
+  const show = searchParams.get("m") === "success";
   return (
     show && (
       <Popup
