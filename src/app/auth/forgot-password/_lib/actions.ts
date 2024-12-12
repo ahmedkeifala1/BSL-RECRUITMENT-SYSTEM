@@ -29,7 +29,7 @@ export async function sendPasswordResetCode(data: ForgotPassword) {
         });
 
         const token = await repo.signCookie();
-        const html = await Template.RESET_PASSWORD_OTP.fill([
+        const html = await Template.RECOVER_PASSWORD_OTP.fill([
           {
             key: "name",
             value: user.fullName,

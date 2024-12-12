@@ -12,11 +12,11 @@ const AdminRoutes: Route[] = [
     icon: "Users2Icon",
     href: "/admins",
   },
-  {
-    title: "Logs",
-    icon: "LogsIcon",
-    href: "/logs",
-  },
+  // {
+  //   title: "Logs",
+  //   icon: "LogsIcon",
+  //   href: "/logs",
+  // },
 ];
 
 const ManagerRoutes: Route[] = [

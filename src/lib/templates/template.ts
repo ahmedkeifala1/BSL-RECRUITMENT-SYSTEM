@@ -20,8 +20,8 @@ export class Template<T> {
     "/email/otp.html"
   );
 
-  static readonly RESET_PASSWORD_OTP = new Template<"name" | "otp">(
-    "/email/reset-password.html"
+  static readonly RECOVER_PASSWORD_OTP = new Template<"name" | "otp">(
+    "/email/recover-password.html"
   );
 
   static readonly SMS_OTP = new Template<"otp">("/sms/otp.txt");
@@ -37,4 +37,12 @@ export class Template<T> {
   static readonly STAFF_CREATED = new Template<
     "fullName" | "designation" | "password" | "email" | "url"
   >("/email/staff-created.html");
+
+  static readonly USER_PASSWORD_RESET = new Template<"fullName" | "password">(
+    "/email/reset-password.html"
+  );
+
+  static readonly ADMIN_CREATED = new Template<"fullName" | "role">(
+    "/email/admin-created.html"
+  );
 }

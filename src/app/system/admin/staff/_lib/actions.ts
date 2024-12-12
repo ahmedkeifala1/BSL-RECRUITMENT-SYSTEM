@@ -1,12 +1,34 @@
 "use server";
 
 import Database from "@/lib/backend/database/db-context";
-import { ErrorResponse, OkResponse } from "@/lib/shared/response";
+import Response, { ErrorResponse, OkResponse } from "@/lib/shared/response";
 import { Drop } from "@/lib/shared/types";
 import { Prisma } from "@prisma/client";
 import { AddEditStaff } from "./schema";
 import { generateOtp, hashPassword, raise } from "@/lib/backend/utils";
 import StaffEvent from "./events";
+import { SelectObject } from "@/components/system/dynamic-select-field";
+
+export async function getSelectStaff(
+  args?: Drop<Prisma.StaffFindManyArgs, "select" | "include">
+): Promise<Response<SelectObject[] | null>> {
+  return Database.staff
+    .findMany({
+      ...args,
+      select: {
+        id: true,
+        fullName: true,
+      },
+    })
+    .then(
+      (jobs) =>
+        OkResponse.create(
+          jobs.map(({ fullName, ...job }) => ({ ...job, name: fullName }))
+        ),
+      (error) => ErrorResponse.fromError(error)
+    )
+    .catch((error) => ErrorResponse.fromError(error));
+}
 
 export async function getStaff(where: Prisma.StaffWhereUniqueInput) {
   return Database.staff
