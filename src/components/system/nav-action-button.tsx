@@ -8,7 +8,10 @@ import { Drop } from "@/lib/shared/types";
 import { Button, ButtonProps } from "@nextui-org/react";
 import React from "react";
 
-type NavActionButtonProps = Drop<ButtonProps, "onPress" | "href" | "as"> & {
+export type NavActionButtonProps = Drop<
+  ButtonProps,
+  "onPress" | "href" | "as"
+> & {
   nav: NavPath[];
   clear?: NavPathClear;
 };

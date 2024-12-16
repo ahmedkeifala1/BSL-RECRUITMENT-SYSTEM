@@ -180,48 +180,47 @@ export async function getVacancyApplicants(
   where: Prisma.VacancyWhereUniqueInput,
   args?: Prisma.ApplicationFindManyArgs
 ) {
-  return Database.vacancy
-    .findUniqueOrThrow({
-      where,
-      select: {
-        roleType: true,
-        employmentType: true,
-        job: {
-          select: {
-            title: true,
-          },
-        },
-        _count: {
-          select: {
-            applicants: true,
-          },
-        },
-        applicants: {
-          ...args,
-          include: {
-            coverLetter: true,
-            documents: {
-              include: {
-                document: true,
-              },
-            },
-            cv: {
-              include: {
-                document: true,
-              },
-            },
-            jobSeeker: true,
-          },
-        },
+  return Promise.all([
+    Database.application.count({
+      where: {
+        ...args?.where,
+        vacancy: where,
       },
-    })
-    .then(
-      ({ _count, ...vacancy }) =>
-        OkResponse.create({
-          vacancy,
-          total: _count.applicants,
-        }),
-      (error) => ErrorResponse.fromError(error)
-    )
-    .catch((error) => ErrorResponse.fromError(error));
+    }),
+    Database.vacancy
+      .findUniqueOrThrow({
+        where,
+        select: {
+          roleType: true,
+          employmentType: true,
+          job: {
+            select: {
+              title: true,
+            },
+          },
+          applicants: {
+            ...args,
+            include: {
+              coverLetter: true,
+              documents: {
+                include: {
+                  document: true,
+                },
+              },
+              cv: {
+                include: {
+                  document: true,
+                },
+              },
+              jobSeeker: true,
+            },
+          },
+        },
+      })
+      .then(
+        (vacancy) => OkResponse.create(vacancy),
+        (error) => ErrorResponse.fromError(error)
+      )
+      .catch((error) => ErrorResponse.fromError(error)),
+  ]);
 }

@@ -20,7 +20,7 @@ export default function Paging({
   const { navigate } = useNavigation();
 
   return (
-    <div className="flex border-t pt-4 flex-col sm:flex-row items-center justify-end sm:px-4 flex-wrap gap-2">
+    <div className="flex flex-col sm:flex-row items-center justify-end sm:px-4 flex-wrap gap-2">
       <p className="text-sm font-semibold text-slate-600">
         {getShowingRecordsText(meta)}
       </p>

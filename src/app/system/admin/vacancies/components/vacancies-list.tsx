@@ -38,6 +38,10 @@ export default function ListVacancies({ vacancies, meta }: ListVacanciesProps) {
           },
         },
         {
+          header: "Type",
+          accessorKey: "type",
+        },
+        {
           id: "applicants",
           accessorKey: "applicants",
           header: () => <div className="flex justify-center">Applicants</div>,

@@ -14,15 +14,12 @@ type JobsPageProps = ListProps;
 
 export default async function JobsPage({ searchParams }: JobsPageProps) {
   const { skip, o, ...meta } = getPaginatedParams(searchParams);
-  const vacanciesData = await getVacancies({
+  const [total, vacanciesData] = await getVacancies({
     orderBy: {
       postedAt: o === "oldest" ? "asc" : "desc",
     },
   });
-  const { total, vacancies } = getResponseData(vacanciesData, {
-    total: 0,
-    vacancies: [],
-  });
+  const vacancies = getResponseData(vacanciesData, []);
 
   return (
     <div className="container p-6 sm:px-0 flex-1 space-y-4">

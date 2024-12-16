@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import JobModal from "./job-modal";
 
 export default function CreateJob() {
-  const { route } = useNavigation();
+  const { route, searchParams } = useNavigation();
+  const show = searchParams.get("v") === "create";
 
   async function onSubmit(data: AddEditJob) {
     const res = await addJob(data);
@@ -20,5 +21,5 @@ export default function CreateJob() {
     toast(res.message, { type: res.isSuccess ? "success" : "error" });
   }
 
-  return <JobModal onSubmit={onSubmit} verb="Create" />;
+  return show && <JobModal onSubmit={onSubmit} verb="Create" />;
 }

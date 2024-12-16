@@ -7,6 +7,7 @@ import { getLoggedUser } from "@/app/auth/_lib/actions";
 import { getResponseData } from "@/lib/shared/utils";
 import { getLoggedAdmin } from "../../_lib/actions";
 import ChangeJobStatusPage from "../components/manage/change-status-modal";
+import ChangeStatusButton from "../../components/change-status-button";
 
 type JobDetailsPageProps = {
   params: { id: string };
@@ -26,18 +27,16 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
     <>
       <Header returnUrl="/" title={job.title} returnContent="Back to jobs">
         <div className="flex gap-2">
-          {admin.role === "Director" && (
-            <NavActionButton
-              color="warning"
-              variant="solid"
-              nav={[
-                { key: "id", value: job.id },
-                { key: "status", value: job.status },
-              ]}
-            >
-              Change status
-            </NavActionButton>
-          )}
+          <ChangeStatusButton
+            role={admin.role}
+            nav={[
+              { key: "id", value: job.id },
+              { key: "status", value: job.status },
+            ]}
+          >
+            <ChangeJobStatusPage />
+          </ChangeStatusButton>
+
           <NavActionButton
             color="primary"
             variant="flat"
@@ -52,8 +51,6 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
       </Header>
 
       <JobDetails job={job} user={user} />
-
-      {admin.role === "Director" && <ChangeJobStatusPage />}
     </>
   );
 }

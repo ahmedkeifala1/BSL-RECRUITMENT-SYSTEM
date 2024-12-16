@@ -7,7 +7,7 @@ import { ListProps } from "@/lib/shared/types";
 import { listUsers } from "./_lib/actions";
 import ChangeUserStatus from "./components/change-user-status";
 import ResetUserPassword from "./components/reset-user-password";
-import UsersList from "./components/admins-list";
+import UsersList from "./components/users-list";
 import { getLoggedUser } from "@/app/auth/_lib/actions";
 
 type UsersPageProps = ListProps;

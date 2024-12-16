@@ -27,7 +27,7 @@ export default function ConfirmModal(props: Readonly<ConfirmModalProps>) {
   }
 
   return (
-    <Popup isOpen={props.show} onClose={props.onHide}>
+    <Popup isOpen={props.show} onClose={props.onHide} hideCloseButton={true}>
       <Popup.Header>
         {props.action} {props.entity}
       </Popup.Header>
@@ -47,9 +47,11 @@ export default function ConfirmModal(props: Readonly<ConfirmModalProps>) {
       </Popup.Body>
 
       <Popup.Footer>
-        <Popup.CancelButton {...props.noBtnProps}>
-          {props.noBtnProps?.title ?? "Cancel"}
-        </Popup.CancelButton>
+        {props.onHide && (
+          <Popup.CancelButton {...props.noBtnProps}>
+            {props.noBtnProps?.title ?? "Cancel"}
+          </Popup.CancelButton>
+        )}
 
         <Popup.Button
           color="danger"

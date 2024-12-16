@@ -6,15 +6,7 @@ import { Link } from "@nextui-org/react";
 export default function LoginPage() {
   return (
     <>
-      <AppBar className="!bg-white">
-        <Link
-          size="sm"
-          href="/auth/register/employee"
-          className="text-blue-500 font-semibold"
-        >
-          Employee Registration
-        </Link>
-      </AppBar>
+      <AppBar className="!bg-white" />
 
       <main className="flex-1 flex justify-center items-center">
         <div className="container max-w-sm space-y-2">

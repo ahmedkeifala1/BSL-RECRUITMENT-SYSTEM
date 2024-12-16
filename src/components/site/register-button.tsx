@@ -38,13 +38,6 @@ export default function RegisterButton() {
         >
           Job Seeker
         </DropdownItem>
-        <DropdownItem
-          as={Link}
-          href="/register/employee"
-          startContent={<UserPlus2Icon size={17} />}
-        >
-          Employee
-        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

@@ -2,7 +2,7 @@
 
 import Popup from "@/components/system/popup";
 import VerbPopup from "@/components/system/verb-popup";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectItemField } from "@/components/system/select-item-field";
@@ -18,9 +18,10 @@ import { changeVacancyStatus } from "../../_lib/actions";
 export default function ChangeVacancyStatusPage() {
   const { route, searchParams } = useNavigation();
   const show = searchParams.has("status") && searchParams.has("id");
-  const status = searchParams.get("status") as string;
+  const status = searchParams.get("status") as VacancyStatus;
 
   const {
+    setValue,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -41,6 +42,12 @@ export default function ChangeVacancyStatusPage() {
 
     toast(res.message, { type: res.isSuccess ? "success" : "error" });
   }
+
+  useLayoutEffect(() => {
+    if (status) {
+      setValue("status", status, { shouldTouch: true, shouldValidate: true });
+    }
+  }, [setValue, status]);
 
   return (
     show && (

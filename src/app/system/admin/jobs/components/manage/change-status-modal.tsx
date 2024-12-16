@@ -2,7 +2,7 @@
 
 import Popup from "@/components/system/popup";
 import VerbPopup from "@/components/system/verb-popup";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ChangeJobStatus, ChangeJobStatusSchema } from "../../_lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,9 +15,10 @@ import { changeJobStatus } from "../../_lib/actions";
 export default function ChangeJobStatusPage() {
   const { route, searchParams } = useNavigation();
   const show = searchParams.has("status") && searchParams.has("id");
-  const status = searchParams.get("status") as string;
+  const status = searchParams.get("status") as JobStatus;
 
   const {
+    setValue,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -38,6 +39,12 @@ export default function ChangeJobStatusPage() {
 
     toast(res.message, { type: res.isSuccess ? "success" : "error" });
   }
+
+  useLayoutEffect(() => {
+    if (status) {
+      setValue("status", status, { shouldTouch: true, shouldValidate: true });
+    }
+  }, [status, setValue]);
 
   return (
     show && (

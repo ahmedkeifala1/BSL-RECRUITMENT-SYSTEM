@@ -115,11 +115,19 @@ enum VacancyStatus {
   @@map("vacancy_statuses")
 }
 
+enum VacancyType {
+  Internal
+  External
+
+  @@map("vacancy_types")
+}
+
 model Vacancy {
   id             String         @id @default(cuid())
   profession     String
   roleType       String
   employmentType EmploymentType
+  type           VacancyType    @default(External)
   jobId          String
   job            Job            @relation(fields: [jobId], references: [id])
   status         VacancyStatus  @default(Drafted)

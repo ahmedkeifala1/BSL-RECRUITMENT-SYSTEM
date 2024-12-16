@@ -41,14 +41,14 @@ export default function UserDropdown({ user, routes }: UserDropdownProps) {
       </DropdownTrigger>
 
       <DropdownMenu>
-        <DropdownItem
+        {/* <DropdownItem
           as={Link}
           href="/system/profile"
           className="text-foreground"
           endContent={<Icon name="Settings2Icon" />}
         >
           Profile
-        </DropdownItem>
+        </DropdownItem> */}
 
         <DropdownSection items={routes ?? ([] as Route[])} showDivider={true}>
           {(route) => (

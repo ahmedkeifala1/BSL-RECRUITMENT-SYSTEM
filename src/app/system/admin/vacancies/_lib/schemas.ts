@@ -4,6 +4,7 @@ import {
   Job,
   Vacancy,
   VacancyStatus,
+  VacancyType,
 } from "@prisma/client";
 import { z } from "zod";
 
@@ -17,6 +18,10 @@ export const AddEditVacancySchema = z.object({
   jobId: z
     .string({ required_error: "Vacancy job is required" })
     .min(1, "Vacancy job is required"),
+  type: z.nativeEnum(VacancyType, {
+    required_error: "Vacancy type is required",
+    invalid_type_error: "Invalid vacancy type",
+  }),
   employmentType: z.nativeEnum(EmploymentType, {
     required_error: "Vacancy employment type is required",
     invalid_type_error: "Invalid vacancy employment type",

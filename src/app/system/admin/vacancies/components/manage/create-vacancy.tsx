@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import VacancyModal from "../vacancy-modal";
 
 export default function CreateVacancy() {
-  const { route } = useNavigation();
+  const { route, searchParams } = useNavigation();
+  const show = searchParams.get("v") === "create";
 
   async function onSubmit(data: AddEditVacancy) {
     const res = await addVacancy(data);
@@ -20,5 +21,5 @@ export default function CreateVacancy() {
     toast(res.message, { type: res.isSuccess ? "success" : "error" });
   }
 
-  return <VacancyModal onSubmit={onSubmit} verb="Create" />;
+  return show && <VacancyModal onSubmit={onSubmit} verb="Create" />;
 }

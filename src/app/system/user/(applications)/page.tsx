@@ -11,6 +11,7 @@ import { ApplicationStatus } from "@prisma/client";
 import ApplicationsList from "./components/list-application";
 import { IconButton } from "@/components/custom";
 import { Link } from "@nextui-org/react";
+import ViewApplication from "./components/manage/view-application";
 
 type ApplicationsPageProps = ListProps;
 
@@ -78,6 +79,8 @@ export default async function ApplicationsPage({
           />
         </div>
       </div>
+
+      <ViewApplication />
     </>
   );
 }

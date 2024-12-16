@@ -6,5 +6,5 @@ import DashboardComponent from "../../dashboard";
 export default async function ManagerDashboard() {
   const admin = getResponseData(await getLoggedUser());
 
-  return <DashboardComponent user={admin} role="Director" />;
+  return <DashboardComponent user={admin} role="Manager" />;
 }

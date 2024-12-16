@@ -2,7 +2,7 @@
 
 import Popup from "@/components/system/popup";
 import VerbPopup from "@/components/system/verb-popup";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { AddEditJob, AddEditJobSchema } from "../../_lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +23,6 @@ export default function JobModal({
   defaultValues,
 }: JobModalProps) {
   const {
-    reset,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -31,8 +30,6 @@ export default function JobModal({
     defaultValues,
     resolver: zodResolver(AddEditJobSchema),
   });
-
-  useLayoutEffect(() => reset(), [reset]);
 
   return (
     <VerbPopup

@@ -1,4 +1,4 @@
-import { AdminRole } from "@prisma/client";
+import { AdminRole, UserType } from "@prisma/client";
 import { Route } from "./schema";
 
 const AdminRoutes: Route[] = [
@@ -68,7 +68,15 @@ const JobSeekerRoutes: Route[] = [
   },
 ];
 
-type UserRole = AdminRole | "User";
+const StaffRoutes: Route[] = [
+  {
+    title: "Files",
+    icon: "FilesIcon",
+    href: "/files",
+  },
+];
+
+type UserRole = AdminRole | UserType;
 
 export default function getRoutes(role: UserRole) {
   switch (role) {
@@ -80,6 +88,8 @@ export default function getRoutes(role: UserRole) {
       return DirectorRoutes;
     case "User":
       return JobSeekerRoutes;
+    case "Staff":
+      return StaffRoutes;
     default:
       return [] as Route[];
   }

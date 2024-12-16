@@ -6,15 +6,7 @@ import RegisterForm from "./components/register-form";
 export default async function RegisterUserPage() {
   return (
     <>
-      <AppBar className="!bg-white">
-        <Link
-          size="sm"
-          href="/register/employee"
-          className="text-blue-500 font-semibold"
-        >
-          Employee Registration
-        </Link>
-      </AppBar>
+      <AppBar className="!bg-white" />
 
       <main className="flex-1 md:bg-zinc-50 flex flex-col md:justify-center items-center py-6">
         <div className="container md:max-w-xl space-y-2 md:shadow md:border bg-white p-6">
