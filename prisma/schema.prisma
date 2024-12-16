@@ -201,9 +201,9 @@ model Application {
   jobSeeker     JobSeeker             @relation(fields: [jobSeekerId], references: [id])
   vacancyId     String
   vacancy       Vacancy               @relation(fields: [vacancyId], references: [id])
-  cvId          String                @unique
+  cvId          String
   cv            JobSeekerDocument     @relation(fields: [cvId], references: [id])
-  coverLetterId String                @unique
+  coverLetterId String
   coverLetter   Document              @relation(fields: [coverLetterId], references: [id])
   documents     ApplicationDocument[]
 
