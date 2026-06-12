@@ -7,6 +7,7 @@ import { ApplicantDetail, JobApplication } from "./schema";
 import { raise } from "@/lib/backend/utils";
 import ApplicationEvents from "./events";
 import { ApplicationStatus, Prisma } from "@prisma/client";
+import { evaluateApplication } from "@/lib/backend/services/ai-evaluation-service";
 
 export async function getAuthJobSeeker(): Promise<
   Response<ApplicantDetail | null>
@@ -51,6 +52,7 @@ export async function createApplication(data: JobApplication) {
         },
       },
       select: {
+        id: true,
         jobSeeker: {
           select: {
             email: true,
@@ -69,11 +71,13 @@ export async function createApplication(data: JobApplication) {
       },
     })
     .then(
-      ({ vacancy, jobSeeker }) => {
+      ({ id, vacancy, jobSeeker }) => {
         raise(ApplicationEvents.applicationSubmitted, {
           ...jobSeeker,
           job: vacancy.job.title,
         });
+
+        raise(evaluateApplication, id);
 
         return OkResponse.created(true, "Application submitted successfully");
       },
@@ -97,6 +101,7 @@ export async function updateApplicationStatus(
           select: {
             email: true,
             fullName: true,
+            account_id: true,
           },
         },
         vacancy: {

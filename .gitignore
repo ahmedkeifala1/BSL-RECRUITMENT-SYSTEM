@@ -38,4 +38,6 @@ next-env.d.ts
 
 # package manager
 package-lock.json
-/uploads
+
+# uploaded user documents
+/public/uploads

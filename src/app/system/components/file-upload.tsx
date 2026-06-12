@@ -2,74 +2,108 @@
 
 import { Icon } from "@/lib/frontend/icons";
 import { cn, InputProps, Link } from "@nextui-org/react";
-import React, { useMemo, useState } from "react";
+import React, { useId, useMemo, useState } from "react";
+import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "@/app/system/user/files/_lib/schema";
 
 type FileUploadProps = InputProps & {
   setValue?: (file?: File) => void;
 };
 
 export default function FileUpload({ setValue, ...props }: FileUploadProps) {
+  const inputId = useId();
   const [file, setFile] = useState<File>();
+  const [objectUrl, setObjectUrl] = useState<string>();
+  const [error, setError] = useState<string>();
+
   const isPDF = useMemo(
     () => file && file.type.toLowerCase().indexOf("pdf") > -1,
     [file]
   );
 
+  const fileSizeInMB = useMemo(
+    () => file ? (file.size / (1024 * 1024)).toFixed(2) : null,
+    [file]
+  );
+
+  function clearFile() {
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    setObjectUrl(undefined);
+    setFile(undefined);
+    setValue?.(undefined);
+  }
+
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files || e.target.files.length <= 0) {
-      if (setValue) {
-        setValue(undefined);
-      }
-      return setFile(undefined);
+      clearFile();
+      setError(undefined);
+      return;
     }
 
-    const file = e.target.files[0];
+    const selectedFile = e.target.files[0];
 
-    if (setValue) {
-      setValue(file);
+    if (!ALLOWED_FILE_TYPES.includes(selectedFile.type)) {
+      setError("Only PDF and DOC/DOCX files are allowed");
+      clearFile();
+      return;
     }
 
-    setFile(file);
+    if (selectedFile.size > MAX_FILE_SIZE) {
+      setError(`File size must be less than 5MB. Current: ${(selectedFile.size / (1024 * 1024)).toFixed(2)}MB`);
+      clearFile();
+      return;
+    }
+
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    const newUrl = URL.createObjectURL(selectedFile);
+    setError(undefined);
+    setObjectUrl(newUrl);
+    setFile(selectedFile);
+    setValue?.(selectedFile);
   }
 
   return (
     <>
       <div
         className={cn(
-          props.isInvalid ? "border-danger" : "border-primary",
+          error || props.isInvalid ? "border-danger" : "border-primary",
           "border-2 border-dashed p-2 bg-slate-100 flex items-center justify-between gap-2"
         )}
       >
         <div className="flex-1 truncate flex gap-2 items-center">
           <Icon
-            name={file ? (isPDF ? "FileTextIcon" : "ImageIcon") : "FileUpIcon"}
+            name={file ? (isPDF ? "FileTextIcon" : "FileIcon") : "FileUpIcon"}
             size={file ? 28 : 24}
             className={cn(
-              props.isInvalid
+              error || props.isInvalid
                 ? "text-danger"
                 : file
                 ? isPDF
                   ? "text-red-500"
-                  : "text-success-500"
+                  : "text-blue-500"
                 : "text-primary"
             )}
           />
-          <p
-            className={cn(
-              "truncate",
-              props.isInvalid ? "text-danger" : "text-foreground"
+          <div className="flex-1">
+            <p
+              className={cn(
+                "truncate text-sm",
+                error || props.isInvalid ? "text-danger" : "text-foreground"
+              )}
+              title={file ? file.name : "Choose file"}
+            >
+              {file ? file.name : "Choose file to upload"}
+            </p>
+            {file && fileSizeInMB && (
+              <small className="text-slate-500">{fileSizeInMB}MB</small>
             )}
-            title={file ? file.name : "Choose file"}
-          >
-            {file ? file.name : "Choose file to upload"}
-          </p>
+          </div>
         </div>
 
         <div className="flex gap-1">
           <label
-            htmlFor="file"
+            htmlFor={inputId}
             className={cn(
-              props.isInvalid
+              error || props.isInvalid
                 ? "bg-danger-100 text-danger"
                 : "bg-primary text-white",
               "p-2 text-xs font-semibold cursor-pointer hover:bg-opacity-75 duration-150"
@@ -78,11 +112,11 @@ export default function FileUpload({ setValue, ...props }: FileUploadProps) {
             {file ? "Change" : "Upload"} file
           </label>
 
-          {file && (
+          {objectUrl && !error && !props.isInvalid && (
             <Link
               color="success"
               isExternal={true}
-              href={URL.createObjectURL(file)}
+              href={objectUrl}
               className="bg-success bg-opacity-15 text-success p-2 text-xs font-semibold cursor-pointer hover:bg-opacity-20 duration-150"
             >
               Preview
@@ -95,12 +129,12 @@ export default function FileUpload({ setValue, ...props }: FileUploadProps) {
         type="file"
         hidden
         name="file"
-        id="file"
+        id={inputId}
         onChange={handleFileChange}
-        accept=".pdf,image/png,image/jpg,image/jpeg"
+        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       />
-      {props.errorMessage && (
-        <small className="text-danger">{props.errorMessage.toString()}</small>
+      {(error || props.errorMessage) && (
+        <small className="text-danger">{error || props.errorMessage?.toString()}</small>
       )}
     </>
   );

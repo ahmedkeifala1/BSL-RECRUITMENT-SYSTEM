@@ -6,7 +6,7 @@ import {
 
 export function getPaginatedParams<T extends object>(
   params: PaginationParams<T>,
-  defaultValue?: T
+  defaultValue?: T,
 ): PaginatedParams<T> {
   const res = {
     ...defaultValue,
@@ -32,7 +32,7 @@ export function getShowingRecordsText({ l, skip, total }: GridPaginateMeta) {
 export function numberToSelectItemArray(
   length: number,
   prefix?: string,
-  suffix?: string
+  suffix?: string,
 ) {
   return Array.from({ length }).map((_, i) => ({
     key: i + 1,

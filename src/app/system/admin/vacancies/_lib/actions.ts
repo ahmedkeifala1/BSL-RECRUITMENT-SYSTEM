@@ -200,6 +200,9 @@ export async function getVacancyApplicants(
           },
           applicants: {
             ...args,
+            orderBy: args?.orderBy ?? [
+              { matchScore: { sort: "desc", nulls: "last" } },
+            ],
             include: {
               coverLetter: true,
               documents: {

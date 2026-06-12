@@ -9,12 +9,13 @@ import { getResponseData } from "@/lib/shared/utils";
 import Header from "@/app/system/components/header";
 import FileView from "@/app/system/components/file-view";
 import DocumentIcon from "@/app/system/components/document-icon";
-import { Link } from "@nextui-org/react";
+import { Chip, Link } from "@nextui-org/react";
 import ChangeStatusButton from "../../../components/change-status-button";
 import ChangeApplicantStatus from "./components/change-status";
 import Paging from "@/app/system/components/datagrid/paging";
 import EmptyContent from "@/app/system/components/datagrid/empty";
 import { getLoggedAdmin } from "../../../_lib/actions";
+import EvaluateButton from "./components/evaluate-button";
 
 type VacancyApplicantsPageProps = ListProps & {
   params: { id: string };
@@ -146,6 +147,71 @@ export default async function VacancyApplicantsPage({
                   </Link>
                 ))}
               </div>
+            </section>
+
+            <section id="ai-evaluation" className="space-y-3">
+              <h4 className="font-semibold text-slate-700 underline">
+                AI Evaluation
+              </h4>
+
+              {applicant.evaluatedAt ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">Match Score:</span>
+                    <Chip
+                      color={
+                        (applicant.matchScore ?? 0) >= 70
+                          ? "success"
+                          : (applicant.matchScore ?? 0) >= 40
+                          ? "warning"
+                          : "danger"
+                      }
+                      variant="flat"
+                    >
+                      {applicant.matchScore}%
+                    </Chip>
+                  </div>
+
+                  {applicant.summary && (
+                    <p className="text-sm text-slate-600">
+                      {applicant.summary}
+                    </p>
+                  )}
+
+                  {applicant.strengths.length > 0 && (
+                    <div>
+                      <p className="font-medium text-sm">Strengths</p>
+                      <ul className="list-disc list-inside text-sm text-slate-600">
+                        {applicant.strengths.map((strength, index) => (
+                          <li key={index}>{strength}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {applicant.missingQualifications.length > 0 && (
+                    <div>
+                      <p className="font-medium text-sm">
+                        Missing Qualifications
+                      </p>
+                      <ul className="list-disc list-inside text-sm text-slate-600">
+                        {applicant.missingQualifications.map(
+                          (qualification, index) => (
+                            <li key={index}>{qualification}</li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-slate-500">
+                    AI evaluation pending
+                  </p>
+                  <EvaluateButton applicationId={applicant.id} />
+                </div>
+              )}
             </section>
 
             <section id="controls" className="flex justify-between">

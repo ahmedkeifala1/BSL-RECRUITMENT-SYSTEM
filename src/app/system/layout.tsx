@@ -5,6 +5,7 @@ import { getResponseData } from "@/lib/shared/utils";
 import { redirect } from "next/navigation";
 import UserDropdown from "./components/user-dropdown";
 import Loader from "@/components/loader";
+import NotificationBell from "./components/notifications/notification-bell";
 
 export default async function SystemLayout({
   children,
@@ -31,7 +32,10 @@ export default async function SystemLayout({
       <AppBar
         brandName={user.userType === "User" ? "Job Seeker" : user.userType}
       >
-        <UserDropdown user={user} />
+        <div className="flex items-center gap-2">
+          <NotificationBell />
+          <UserDropdown user={user} />
+        </div>
       </AppBar>
 
       <Suspense fallback={<Loader message="Routing...." />}>

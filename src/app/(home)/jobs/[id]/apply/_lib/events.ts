@@ -1,4 +1,5 @@
 import { sendMail } from "@/lib/backend/services/mail-services";
+import { createNotification } from "@/lib/backend/services/notification-service";
 import { ErrorResponse, OkResponse } from "@/lib/shared/response";
 import { Template } from "@/lib/templates/template";
 import { ApplicationStatus } from "@prisma/client";
@@ -41,11 +42,13 @@ export default class ApplicationEvents {
     email,
     fullName,
     status,
+    account_id,
   }: {
     job: string;
     fullName: string;
     email: string;
     status: ApplicationStatus;
+    account_id: string;
   }) {
     const html = await Template.APPLICATION_STATUS_CHANGED.fill([
       {
@@ -72,5 +75,12 @@ export default class ApplicationEvents {
         (error) => ErrorResponse.fromError(error)
       )
       .catch((error) => ErrorResponse.fromError(error));
+
+    await createNotification({
+      userId: account_id,
+      title: `Application ${status}`,
+      message: `Your application for ${job} has been updated to "${status}".`,
+      link: "/system/user",
+    });
   }
 }

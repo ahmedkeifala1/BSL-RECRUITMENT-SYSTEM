@@ -35,7 +35,7 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     "/auth",
-    "/auth/((?!verify-email|email-verified|verify-otp|locked).*)",
+    "/auth/((?!verify-email|email-verified|verify-otp|locked|forgot-password|reset-password).*)",
     "/system/(.*)",
   ],
 };

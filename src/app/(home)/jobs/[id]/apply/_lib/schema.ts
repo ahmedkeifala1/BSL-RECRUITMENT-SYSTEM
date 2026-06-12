@@ -24,7 +24,8 @@ export const JobApplicationSchema = z.object({
     .min(1, "Please select a cover letter"),
   otherDocumentsId: z
     .array(z.string())
-    .min(1, "Please select at least one document"),
+    .optional()
+    .default([]),
 });
 
 export type JobApplication = z.infer<typeof JobApplicationSchema>;

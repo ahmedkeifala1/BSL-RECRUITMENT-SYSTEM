@@ -72,8 +72,8 @@ export async function uploadFile(form: FormData) {
       },
     })
     .then(
-      () => {
-        fileService.upload();
+      async () => {
+        await fileService.upload();
 
         return OkResponse.created(true, "Document uploaded successfully");
       },

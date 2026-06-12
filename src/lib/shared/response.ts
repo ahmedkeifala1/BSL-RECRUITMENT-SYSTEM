@@ -7,7 +7,7 @@ export default class Response<T> {
     public data: T,
     public code: number,
     public message: string,
-    public isSuccess: boolean
+    public isSuccess: boolean,
   ) {
     this.isFailure = !isSuccess;
   }
@@ -78,7 +78,17 @@ export class ErrorResponse extends Response<null> {
       };
 
       code = codes[error.code] ?? 500;
-      message = (error.meta?.message as string) ?? error.message;
+
+      if (error.code === "P2002") {
+        const target = error.meta?.target as string[] | undefined;
+        if (target?.includes("email")) {
+          message = "This email is already registered";
+        } else {
+          message = `This ${target?.[0] ?? "field"} is already in use`;
+        }
+      } else {
+        message = (error.meta?.message as string) ?? error.message;
+      }
     } else if (error instanceof Error) {
       message = error.message;
     }

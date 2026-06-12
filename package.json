@@ -10,6 +10,7 @@
     "postinstall": "npx prisma generate"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.1",
     "@hookform/resolvers": "^3.9.1",
     "@nextui-org/react": "^2.4.8",
     "@prisma/client": "^5.22.0",
@@ -22,9 +23,11 @@
     "framer-motion": "^11.11.17",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.460.0",
+    "mammoth": "^1.12.0",
     "next": "14.2.18",
     "next-auth": "^4.24.10",
     "nodemailer": "^6.9.16",
+    "pdf-parse": "^2.4.5",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
